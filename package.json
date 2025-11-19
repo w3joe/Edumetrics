@@ -1,0 +1,31 @@
+{
+  "name": "edumetrics",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "lint": "turbo run lint",
+    "db:seed": "turbo run db:seed"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@vitest/ui": "^4.0.10",
+    "turbo": "^2.3.3"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "packageManager": "npm@9.0.0",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.17",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
+    "vitest": "4.0.10"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-darwin-arm64": "^4.53.3"
+  }
+}

@@ -1,0 +1,107 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id       String  @id @default(uuid())
+  role     String  // 'teacher' | 'admin'
+  email    String  @unique
+  name     String
+  schoolId String
+  school   School  @relation(fields: [schoolId], references: [id])
+
+  classes Class[]
+
+  @@map("users")
+}
+
+model School {
+  id       String  @id @default(uuid())
+  name     String
+  timezone String?
+  users    User[]
+  classes  Class[]
+
+  @@map("schools")
+}
+
+model Class {
+  id        String       @id @default(uuid())
+  name      String
+  schoolId  String
+  teacherId String
+  school    School       @relation(fields: [schoolId], references: [id])
+  teacher   User         @relation(fields: [teacherId], references: [id])
+  students  Student[]
+  assignments Assignment[]
+
+  @@map("classes")
+}
+
+model Student {
+  id             String           @id @default(uuid())
+  classId        String
+  name           String
+  email          String?
+  class          Class            @relation(fields: [classId], references: [id])
+  submissions    Submission[]
+  practiceSessions PracticeSession[]
+  moodChecks     MoodCheck[]
+
+  @@map("students")
+}
+
+model Assignment {
+  id             String       @id @default(uuid())
+  classId        String
+  title          String
+  topic          String
+  dueAt          String       // ISO datetime string
+  timeEstimateMin Int
+  class          Class        @relation(fields: [classId], references: [id])
+  submissions    Submission[]
+
+  @@map("assignments")
+}
+
+model Submission {
+  id           String     @id @default(uuid())
+  assignmentId String
+  studentId    String
+  scorePct     Float      // 0-100
+  completedAt  String     // ISO datetime string
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  student      Student    @relation(fields: [studentId], references: [id])
+
+  @@map("submissions")
+}
+
+model PracticeSession {
+  id           String  @id @default(uuid())
+  studentId    String
+  startedAt    String  // ISO datetime string
+  durationMin  Int
+  accuracyPct  Float   // 0-100
+  student      Student @relation(fields: [studentId], references: [id])
+
+  @@map("practice_sessions")
+}
+
+model MoodCheck {
+  id        String  @id @default(uuid())
+  studentId String
+  date      String  // ISO date string
+  moodScore Int     // 1-5
+  student   Student @relation(fields: [studentId], references: [id])
+
+  @@map("mood_checks")
+}
+
