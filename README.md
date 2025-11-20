@@ -1,4 +1,4 @@
-# Edumetrics - Teacher Class Insights MVP
+# Edumetrics 
 
 A web application that enables teachers to view their classes, monitor student performance metrics, and create assignments.
 
